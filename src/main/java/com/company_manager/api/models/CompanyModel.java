@@ -1,9 +1,12 @@
 package com.company_manager.api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -33,5 +36,9 @@ public class CompanyModel {
 
     @Column(length = 200)
     private String observation;
+
+    @OneToMany(mappedBy = "company")
+    @JsonIgnore
+    private List<VehicleModel> vehicles;
 
 }
