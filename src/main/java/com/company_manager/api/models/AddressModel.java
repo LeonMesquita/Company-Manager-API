@@ -34,7 +34,4 @@ public class AddressModel {
     @Column(nullable = false, length = 2)
     private String uf;
 
-    @OneToMany(mappedBy = "address")
-    @JsonIgnore
-    private List<CompanyModel> companies;
 }

@@ -18,8 +18,8 @@ public class CompanyModel {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "addressId", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "addressId", nullable = false, referencedColumnName = "id")
     private AddressModel address;
 
     @Column(nullable = false, length = 80)
