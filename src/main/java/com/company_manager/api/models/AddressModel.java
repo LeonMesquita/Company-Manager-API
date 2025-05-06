@@ -1,9 +1,12 @@
 package com.company_manager.api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -30,4 +33,8 @@ public class AddressModel {
 
     @Column(nullable = false, length = 2)
     private String uf;
+
+    @OneToMany(mappedBy = "address")
+    @JsonIgnore
+    private List<CompanyModel> companies;
 }
