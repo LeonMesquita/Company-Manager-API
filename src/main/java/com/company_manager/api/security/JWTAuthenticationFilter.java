@@ -15,6 +15,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         private final AuthenticationManager authenticationManager;
@@ -35,8 +37,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                         userCredentials.getUsername(), userCredentials.getPassword(), new ArrayList<>()
                 );
                 return this.authenticationManager.authenticate(authToken);
-            } catch (Exception e) {
-                throw new RuntimeException();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
 
@@ -48,8 +50,14 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             String token = this.jwtUtil.generateToken(username);
             response.addHeader("Authorization", "Bearer " + token);
             response.addHeader("access-control-expose-headers", "Authorization");
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+
+            Map<String, String> tokenMap = new HashMap<>();
+            tokenMap.put("token", token);
+
+            String json = new ObjectMapper().writeValueAsString(tokenMap);
+            response.getWriter().write(json);
+
         }
-
-
-
 }

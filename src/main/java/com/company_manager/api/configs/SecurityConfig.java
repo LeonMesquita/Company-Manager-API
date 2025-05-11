@@ -1,6 +1,7 @@
 package com.company_manager.api.configs;
 
 import com.company_manager.api.security.JWTAuthenticationFilter;
+import com.company_manager.api.security.JWTAuthorizationFilter;
 import com.company_manager.api.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -54,7 +55,7 @@ public class SecurityConfig {
 
         http
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // use CORS corretamente se necessário
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .securityContext(securityContext -> securityContext.requireExplicitSave(false))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PUBLIC_MATCHERS).permitAll()
@@ -64,8 +65,9 @@ public class SecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .authenticationManager(authenticationManager) // Aqui, fora do bloco authorizeHttpRequests
-                .addFilter(new JWTAuthenticationFilter(authenticationManager, jwtUtil));
+                .authenticationManager(authenticationManager)
+                .addFilter(new JWTAuthenticationFilter(authenticationManager, jwtUtil))
+                .addFilter(new JWTAuthorizationFilter(this.authenticationManager, this.jwtUtil, this.userDetailsService));
 
         return http.build();
     }
@@ -87,6 +89,4 @@ public class SecurityConfig {
 
         return new BCryptPasswordEncoder();
     }
-
-
 }
