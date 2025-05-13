@@ -1,5 +1,7 @@
 package com.company_manager.api.configs;
 
+import com.company_manager.api.exceptions.CustomAccessDeniedHandler;
+import com.company_manager.api.exceptions.CustomAuthenticationEntryPoint;
 import com.company_manager.api.security.JWTAuthenticationFilter;
 import com.company_manager.api.security.JWTAuthorizationFilter;
 import com.company_manager.api.security.JWTUtil;
@@ -28,6 +30,14 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
+
+
+    @Autowired
+    private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
 
     @Autowired
     private JWTUtil jwtUtil;
@@ -61,6 +71,10 @@ public class SecurityConfig {
                         .requestMatchers(PUBLIC_MATCHERS).permitAll()
                         .requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
                         .anyRequest().authenticated()
+                )
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
+                        .accessDeniedHandler(customAccessDeniedHandler)
                 )
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
