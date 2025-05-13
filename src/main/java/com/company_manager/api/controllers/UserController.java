@@ -26,7 +26,13 @@ public class UserController {
 
 
     @PostMapping
-    private ResponseEntity<UserModel> createuser(@RequestBody @Valid UserDTO body) {
+    private ResponseEntity<UserModel> createUser(@RequestBody @Valid UserDTO body) {
+        UserModel user = userService.save(body);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    }
+
+    @PostMapping("/admin")
+    private ResponseEntity<UserModel> createAdminUser(@RequestBody @Valid UserDTO body) {
         UserModel user = userService.save(body);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }

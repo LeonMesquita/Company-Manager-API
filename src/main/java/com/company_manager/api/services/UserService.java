@@ -40,6 +40,9 @@ public class UserService {
         return userRepository.save(userModel);
     }
 
+
+
+
     public UserModel update(Long id, UserDTO dto) {
         boolean usernameExists = userRepository.existsByUsername(dto.getUsername());
         if (usernameExists) {
