@@ -54,10 +54,18 @@ public class UserService {
         return userRepository.save(userModel);
     }
 
+
+    public void delete(Long id) {
+        adminOrUserAuthenticated(id);
+        UserModel user = userRepository.findById(id).orElseThrow(
+                () -> new GenericNotFoundException("Usuário não encontrado!")
+        );
+
+        userRepository.delete(user);
+    }
+
     public UserModel findById(Long id) {
-        UserSpringSecurity userSpringSecurity = authenticated();
-        if (!Objects.nonNull(userSpringSecurity) || !userSpringSecurity.hasRole(ProfileEnum.ADMIN)  && !id.equals(userSpringSecurity.getId()))
-            throw new AuthorizationException("Acesso negado!");
+        adminOrUserAuthenticated(id);
         return userRepository.findById(id).orElseThrow(
                 () -> new GenericNotFoundException("Usuário não encontrado!")
         );
@@ -67,11 +75,13 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public static UserSpringSecurity authenticated() {
+    public static void adminOrUserAuthenticated(Long id) {
         try {
-            return (UserSpringSecurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            UserSpringSecurity userSpringSecurity = (UserSpringSecurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (!Objects.nonNull(userSpringSecurity) || (!userSpringSecurity.hasRole(ProfileEnum.ADMIN)  && !id.equals(userSpringSecurity.getId())))
+                throw new AuthorizationException("Acesso negado!");
         } catch (Exception e) {
-            return null;
+            throw new RuntimeException(e);
         }
     }
 }

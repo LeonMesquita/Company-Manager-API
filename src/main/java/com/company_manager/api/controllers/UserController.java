@@ -25,12 +25,6 @@ public class UserController {
     }
 
 
-    @PostMapping
-    private ResponseEntity<UserModel> createUser(@RequestBody @Valid UserDTO body) {
-        UserModel user = userService.save(body);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
-    }
-
     @PostMapping("/admin")
     private ResponseEntity<UserModel> createAdminUser(@RequestBody @Valid UserDTO body) {
         UserModel user = userService.save(body);
@@ -48,6 +42,12 @@ public class UserController {
     private ResponseEntity<UserModel> updateUser(@PathVariable Long id, @RequestBody @Valid UserDTO body) {
         UserModel user = userService.update(id, body);
         return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
+    @DeleteMapping("/{id}")
+    private ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.delete(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }
