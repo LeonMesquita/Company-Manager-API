@@ -44,6 +44,7 @@ public class UserService {
 
 
     public UserModel update(Long id, UserDTO dto) {
+        adminOrUserAuthenticated(id);
         boolean usernameExists = userRepository.existsByUsername(dto.getUsername());
         if (usernameExists) {
             throw new GenericConflictException("O usuário " + dto.getUsername() + " já existe!");

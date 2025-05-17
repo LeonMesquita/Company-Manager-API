@@ -20,15 +20,32 @@ public class AddressController {
     }
 
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping
     public ResponseEntity<List<AddressModel>> getAddresses() {
         List<AddressModel> addresses = addressService.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(addresses);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AddressModel> getAddressById(@PathVariable Long id) {
+        AddressModel address = addressService.findById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(address);
+    }
+
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<AddressModel> createAddress(@RequestBody @Valid AddressDto body) {
         AddressModel address = addressService.save(body);
         return ResponseEntity.status(HttpStatus.CREATED).body(address);
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{id}")
+    public ResponseEntity<AddressModel> updateAddress(@PathVariable Long id, @RequestBody @Valid AddressDto body) {
+        AddressModel address = addressService.update(id, body);
+        return ResponseEntity.status(HttpStatus.OK).body(address);
+    }
+
 }
