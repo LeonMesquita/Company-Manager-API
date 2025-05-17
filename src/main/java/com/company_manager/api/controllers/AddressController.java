@@ -48,4 +48,11 @@ public class AddressController {
         return ResponseEntity.status(HttpStatus.OK).body(address);
     }
 
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAddress(@PathVariable Long id) {
+        addressService.delete(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
 }

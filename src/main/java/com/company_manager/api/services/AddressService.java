@@ -39,10 +39,14 @@ public class AddressService {
     }
 
     public AddressModel update(Long id, AddressDto dto) {
-        UserService.adminOrUserAuthenticated(id);
         AddressModel addressModel = this.findById(id);
         BeanUtils.copyProperties(dto, addressModel, "id");
         return addressRepository.save(addressModel);
 
+    }
+
+    public void delete(Long id) {
+        AddressModel addressModel = this.findById(id);
+        addressRepository.delete(addressModel);
     }
 }
