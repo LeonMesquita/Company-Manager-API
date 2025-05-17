@@ -51,6 +51,9 @@ public class CompanyService {
     }
 
     public List<CompanyModel> findByPartialFantasyName(String fantasyName) {
+        if (fantasyName.isEmpty()) {
+            return companyRepository.findAll();
+        }
         return companyRepository.findByFantasyNameContainingIgnoreCase(fantasyName);
     }
 
