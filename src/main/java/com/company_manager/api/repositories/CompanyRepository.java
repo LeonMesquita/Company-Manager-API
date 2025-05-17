@@ -4,6 +4,8 @@ import com.company_manager.api.models.CompanyModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Repository
 public interface CompanyRepository extends JpaRepository<CompanyModel, Long> {
@@ -14,6 +16,8 @@ public interface CompanyRepository extends JpaRepository<CompanyModel, Long> {
     CompanyModel findByCnpj(String cnpj);
     CompanyModel findByCompanyName(String companyName);
     CompanyModel findByFantasyName(String fantasyName);
+
+    List<CompanyModel> findByCnpjContaining(String partialCnpj);
 
 
 }

@@ -32,4 +32,12 @@ public class CompanyController {
         CompanyModel company = companyService.save(body);
         return ResponseEntity.status(HttpStatus.CREATED).body(company);
     }
+
+
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @GetMapping("/search")
+    public ResponseEntity<List<CompanyModel>> searchCompanyByPartialCnpj(@RequestParam("cnpj") String cnpj) {
+        List<CompanyModel> companies = companyService.findByPartialCnpj(cnpj);
+        return ResponseEntity.status(HttpStatus.OK).body(companies);
+    }
 }

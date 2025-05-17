@@ -30,4 +30,10 @@ public class CompanyService {
         return companyRepository.save(companyModel);
 
     }
+
+    public List<CompanyModel> findByPartialCnpj(String cnpj) {
+        return companyRepository.findByCnpjContaining(cnpj);
+    }
+
+
 }
