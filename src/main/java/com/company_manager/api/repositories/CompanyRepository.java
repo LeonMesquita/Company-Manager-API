@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -15,11 +16,11 @@ public interface CompanyRepository extends JpaRepository<CompanyModel, Long> {
     boolean existsByFantasyName(String cnpj);
     boolean existsByAddress(AddressModel addressModel);
 
-    CompanyModel findByCnpj(String cnpj);
+    Optional<CompanyModel> findByCnpj(String cnpj);
     CompanyModel findByCompanyName(String companyName);
     CompanyModel findByFantasyName(String fantasyName);
 
-    List<CompanyModel> findByCnpjContaining(String partialCnpj);
+    List<CompanyModel> findByFantasyNameContainingIgnoreCase(String fantasyName);
 
 
 }

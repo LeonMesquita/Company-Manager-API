@@ -2,6 +2,7 @@ package com.company_manager.api.services;
 
 import com.company_manager.api.dtos.CompanyDTO;
 import com.company_manager.api.exceptions.GenericConflictException;
+import com.company_manager.api.exceptions.GenericNotFoundException;
 import com.company_manager.api.models.AddressModel;
 import com.company_manager.api.models.CompanyModel;
 import com.company_manager.api.repositories.CompanyRepository;
@@ -49,8 +50,14 @@ public class CompanyService {
 
     }
 
-    public List<CompanyModel> findByPartialCnpj(String cnpj) {
-        return companyRepository.findByCnpjContaining(cnpj);
+    public List<CompanyModel> findByPartialFantasyName(String fantasyName) {
+        return companyRepository.findByFantasyNameContainingIgnoreCase(fantasyName);
+    }
+
+    public CompanyModel findByCnpj(String cnpj) {
+        return companyRepository.findByCnpj(cnpj).orElseThrow(
+                () -> new GenericNotFoundException("Empresa não encontrada!")
+        );
     }
 
 

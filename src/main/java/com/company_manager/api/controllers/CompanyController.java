@@ -36,8 +36,13 @@ public class CompanyController {
 
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/search")
-    public ResponseEntity<List<CompanyModel>> searchCompanyByPartialCnpj(@RequestParam("cnpj") String cnpj) {
-        List<CompanyModel> companies = companyService.findByPartialCnpj(cnpj);
+    public ResponseEntity<List<CompanyModel>> searchCompanyByPartialCnpj(@RequestParam("fantasy_name") String fantasyName) {
+        List<CompanyModel> companies = companyService.findByPartialFantasyName(fantasyName);
         return ResponseEntity.status(HttpStatus.OK).body(companies);
+    }
+
+    @GetMapping("/cnpj/{cnpj}")
+    public ResponseEntity<CompanyModel> getCompanyByCnpj(@PathVariable String cnpj) {
+        return ResponseEntity.status(HttpStatus.OK).body(companyService.findByCnpj(cnpj));
     }
 }
