@@ -53,4 +53,9 @@ public class VehicleService {
         BeanUtils.copyProperties(dto, vehicleModel, "id");
         return vehicleRepository.save(vehicleModel);
     }
+
+    public void delete(Long id) {
+        VehicleModel vehicle = this.findById(id);
+        vehicleRepository.delete(vehicle);
+    }
 }

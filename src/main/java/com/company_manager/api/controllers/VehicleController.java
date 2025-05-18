@@ -25,18 +25,27 @@ public class VehicleController {
         return ResponseEntity.status(HttpStatus.OK).body(vehicleService.findAll());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<VehicleModel> createVehicle(@RequestBody @Valid VehicleDTO body) {
         return ResponseEntity.status(HttpStatus.CREATED).body(vehicleService.save(body));
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<VehicleModel> getVehicleById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(vehicleService.findById(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<VehicleModel> updateVehicle(@PathVariable Long id, @RequestBody @Valid VehicleDTO body) {
         return ResponseEntity.status(HttpStatus.OK).body(vehicleService.update(id, body));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteVehicle(@PathVariable Long id) {
+        return  ResponseEntity.status(HttpStatus.OK).build();
     }
 }
