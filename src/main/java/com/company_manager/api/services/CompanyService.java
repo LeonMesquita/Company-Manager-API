@@ -11,6 +11,8 @@ import com.company_manager.api.repositories.CompanyRepository;
 import jakarta.persistence.EntityExistsException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,8 +26,8 @@ public class CompanyService {
     @Autowired
     AddressService addressService;
 
-    public List<CompanyModel> findAll() {
-        return companyRepository.findAll();
+    public Page<CompanyModel> findAll(Pageable pageable) {
+        return companyRepository.findAll(pageable);
     }
 
     public CompanyModel save(CompanyDTO dto) {

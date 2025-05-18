@@ -6,6 +6,9 @@ import com.company_manager.api.models.CompanyModel;
 import com.company_manager.api.services.CompanyService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,10 +23,14 @@ public class CompanyController {
     CompanyService companyService;
 
 
-
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping
-    public ResponseEntity<List<CompanyModel>> getAllCompanies() {
-        List<CompanyModel> companies = companyService.findAll();
+    public ResponseEntity<Page<CompanyModel>> getAllCompanies(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy
+    ) {
+        Page<CompanyModel> companies = companyService.findAll(PageRequest.of(page, size, Sort.by(sortBy)));
         return ResponseEntity.status(HttpStatus.OK).body(companies);
     }
 
