@@ -1,6 +1,8 @@
 package com.company_manager.api.services;
 
 import com.company_manager.api.dtos.CompanyDTO;
+import com.company_manager.api.dtos.CompanyWithVehiclesResponseDTO;
+import com.company_manager.api.dtos.VehicleResponseDTO;
 import com.company_manager.api.exceptions.GenericConflictException;
 import com.company_manager.api.exceptions.GenericNotFoundException;
 import com.company_manager.api.models.AddressModel;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CompanyService {
@@ -66,6 +69,22 @@ public class CompanyService {
     public CompanyModel findById(Long id) {
         return companyRepository.findById(id).orElseThrow(
                 () -> new GenericNotFoundException("Empresa com o id " + id + " não encontrada!")
+        );
+    }
+
+    public CompanyWithVehiclesResponseDTO getCompanyWithVehicles(Long id) {
+        CompanyModel model = companyRepository.findWithVehiclesById(id)
+                .orElseThrow(() -> new GenericNotFoundException("Empresa não encontrada"));
+
+        List<VehicleResponseDTO> vehicleDtos = model.getVehicles().stream()
+                .map(v -> new VehicleResponseDTO(
+                        v.getId(), v.getVehicleDescription(), v.getPlate(), v.getPrice()))
+                .collect(Collectors.toList());
+
+        return new CompanyWithVehiclesResponseDTO(
+                model.getId(), model.getFantasyName(), model.getCompanyName(),
+                model.getCnpj(), model.getEmail(), model.getObservation(),
+                vehicleDtos
         );
     }
 

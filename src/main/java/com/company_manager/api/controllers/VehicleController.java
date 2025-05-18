@@ -1,5 +1,4 @@
 package com.company_manager.api.controllers;
-
 import com.company_manager.api.dtos.VehicleDTO;
 import com.company_manager.api.models.VehicleModel;
 import com.company_manager.api.services.VehicleService;

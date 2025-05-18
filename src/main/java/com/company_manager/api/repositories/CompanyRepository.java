@@ -2,6 +2,7 @@ package com.company_manager.api.repositories;
 
 import com.company_manager.api.models.AddressModel;
 import com.company_manager.api.models.CompanyModel;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -21,6 +22,9 @@ public interface CompanyRepository extends JpaRepository<CompanyModel, Long> {
     CompanyModel findByFantasyName(String fantasyName);
 
     List<CompanyModel> findByFantasyNameContainingIgnoreCase(String fantasyName);
+
+    @EntityGraph(attributePaths = {"vehicles"})
+    Optional<CompanyModel> findWithVehiclesById(Long id);
 
 
 }

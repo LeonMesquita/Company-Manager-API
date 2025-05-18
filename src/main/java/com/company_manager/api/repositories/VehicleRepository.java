@@ -2,6 +2,7 @@ package com.company_manager.api.repositories;
 
 import com.company_manager.api.models.CompanyModel;
 import com.company_manager.api.models.VehicleModel;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +16,6 @@ public interface VehicleRepository extends JpaRepository<VehicleModel, Long> {
     Optional<VehicleModel> findByPlate(String plate);
 
     Optional<VehicleModel> findByCompany(CompanyModel company);
+
+
 }

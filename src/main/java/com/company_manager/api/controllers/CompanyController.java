@@ -1,6 +1,7 @@
 package com.company_manager.api.controllers;
 
 import com.company_manager.api.dtos.CompanyDTO;
+import com.company_manager.api.dtos.CompanyWithVehiclesResponseDTO;
 import com.company_manager.api.models.CompanyModel;
 import com.company_manager.api.services.CompanyService;
 import jakarta.validation.Valid;
@@ -46,5 +47,11 @@ public class CompanyController {
     @GetMapping("/cnpj/{cnpj}")
     public ResponseEntity<CompanyModel> getCompanyByCnpj(@PathVariable String cnpj) {
         return ResponseEntity.status(HttpStatus.OK).body(companyService.findByCnpj(cnpj));
+    }
+
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @GetMapping("/{id}/vehicles")
+    public ResponseEntity<CompanyWithVehiclesResponseDTO> getCompanyWithVehicles(@PathVariable Long id) {
+        return ResponseEntity.ok(companyService.getCompanyWithVehicles(id));
     }
 }
