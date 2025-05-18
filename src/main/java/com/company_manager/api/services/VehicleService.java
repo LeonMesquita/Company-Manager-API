@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class VehicleService {
@@ -40,5 +42,15 @@ public class VehicleService {
         return vehicleRepository.findById(id).orElseThrow(
                 () -> new GenericNotFoundException("Veículo com o id " + id + " não encontrado!")
         );
+    }
+
+    public VehicleModel update(Long id, VehicleDTO dto) {
+        VehicleModel vehicleModel = this.findById(id);
+        Optional<VehicleModel> existingVehicle = vehicleRepository.findByPlate(dto.getPlate());
+        if (existingVehicle.isPresent() && !Objects.equals(existingVehicle.get().getPlate(), vehicleModel.getPlate())) {
+            throw new GenericConflictException("já existe um veículo com essa placa");
+        }
+        BeanUtils.copyProperties(dto, vehicleModel, "id");
+        return vehicleRepository.save(vehicleModel);
     }
 }

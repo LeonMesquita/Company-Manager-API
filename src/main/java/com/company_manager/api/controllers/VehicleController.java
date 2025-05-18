@@ -34,4 +34,9 @@ public class VehicleController {
     public ResponseEntity<VehicleModel> getVehicleById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(vehicleService.findById(id));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<VehicleModel> updateVehicle(@PathVariable Long id, @RequestBody @Valid VehicleDTO body) {
+        return ResponseEntity.status(HttpStatus.OK).body(vehicleService.update(id, body));
+    }
 }
