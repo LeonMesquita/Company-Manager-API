@@ -55,11 +55,11 @@ public class CompanyService {
 
     }
 
-    public List<CompanyModel> findByPartialFantasyName(String fantasyName) {
+    public Page<CompanyModel> findByPartialFantasyName(String fantasyName, Pageable pageable) {
         if (fantasyName.isEmpty()) {
-            return companyRepository.findAll();
+            return companyRepository.findAll(pageable);
         }
-        return companyRepository.findByFantasyNameContainingIgnoreCase(fantasyName);
+        return companyRepository.findByFantasyNameContainingIgnoreCase(fantasyName, pageable);
     }
 
     public CompanyModel findByCnpj(String cnpj) {

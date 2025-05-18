@@ -44,10 +44,15 @@ public class CompanyController {
 
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/search")
-    public ResponseEntity<List<CompanyModel>> searchCompanyByPartialCnpj(
-            @RequestParam(value = "fantasy_name", required = false, defaultValue = "") String fantasyName) {
+    public ResponseEntity<Page<CompanyModel>> searchCompanyByPartialCnpj(
+            @RequestParam(value = "fantasy_name", required = false, defaultValue = "") String fantasyName,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy
 
-        List<CompanyModel> companies = companyService.findByPartialFantasyName(fantasyName);
+    ) {
+
+        Page<CompanyModel> companies = companyService.findByPartialFantasyName(fantasyName, PageRequest.of(page, size, Sort.by(sortBy)));
         return ResponseEntity.status(HttpStatus.OK).body(companies);
     }
 

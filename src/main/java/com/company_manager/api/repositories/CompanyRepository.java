@@ -2,6 +2,8 @@ package com.company_manager.api.repositories;
 
 import com.company_manager.api.models.AddressModel;
 import com.company_manager.api.models.CompanyModel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -21,7 +23,7 @@ public interface CompanyRepository extends JpaRepository<CompanyModel, Long> {
     CompanyModel findByCompanyName(String companyName);
     CompanyModel findByFantasyName(String fantasyName);
 
-    List<CompanyModel> findByFantasyNameContainingIgnoreCase(String fantasyName);
+    Page<CompanyModel> findByFantasyNameContainingIgnoreCase(String fantasyName, Pageable pageable);
 
     @EntityGraph(attributePaths = {"vehicles"})
     Optional<CompanyModel> findWithVehiclesById(Long id);
