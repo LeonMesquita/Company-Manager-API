@@ -29,4 +29,9 @@ public class VehicleController {
     public ResponseEntity<VehicleModel> createVehicle(@RequestBody @Valid VehicleDTO body) {
         return ResponseEntity.status(HttpStatus.CREATED).body(vehicleService.save(body));
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<VehicleModel> getVehicleById(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(vehicleService.findById(id));
+    }
 }

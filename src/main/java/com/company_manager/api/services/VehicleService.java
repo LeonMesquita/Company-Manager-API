@@ -2,6 +2,7 @@ package com.company_manager.api.services;
 
 import com.company_manager.api.dtos.VehicleDTO;
 import com.company_manager.api.exceptions.GenericConflictException;
+import com.company_manager.api.exceptions.GenericNotFoundException;
 import com.company_manager.api.models.CompanyModel;
 import com.company_manager.api.models.VehicleModel;
 import com.company_manager.api.repositories.VehicleRepository;
@@ -33,6 +34,11 @@ public class VehicleService {
         BeanUtils.copyProperties(dto, vehicleModel);
         vehicleModel.setCompany(companyModel);
         return vehicleRepository.save(vehicleModel);
+    }
 
+    public VehicleModel findById(Long id) {
+        return vehicleRepository.findById(id).orElseThrow(
+                () -> new GenericNotFoundException("Veículo com o id " + id + " não encontrado!")
+        );
     }
 }
