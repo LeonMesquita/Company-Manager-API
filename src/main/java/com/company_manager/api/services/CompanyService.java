@@ -63,5 +63,11 @@ public class CompanyService {
         );
     }
 
+    public CompanyModel findById(Long id) {
+        return companyRepository.findById(id).orElseThrow(
+                () -> new GenericNotFoundException("Empresa com o id " + id + " não encontrada!")
+        );
+    }
+
 
 }

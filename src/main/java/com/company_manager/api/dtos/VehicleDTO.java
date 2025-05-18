@@ -19,6 +19,6 @@ public class VehicleDTO {
     private Double price;
 
     @NotNull
-    private Integer companyId;
+    private Long companyId;
 
 }
